@@ -1,29 +1,13 @@
-{% for message in get_flashed_messages() %}
-    <div style="color: red;">{{ message }}</div>
-{% endfor %}
-
-
-{% if g.user %}
-    <h2>{{ g.user.firstname }}</h2>
-{% endif %}
-
-
-<h1>Register</h1>
-<form method="post">
-    <label for="firstname">First Name</label>
-    <input name="firstname" id="firstname" required><br />
-
-    <label for="lastname">Last Name</label>
-    <input name="lastname" id="lastname" required><br />
-
-    <label for="email">E-Mail</label>
-    <input name="email" id="email" type="email"><br />
-
-    <label for="username">Username</label>
-    <input name="username" id="username" required><br />
-
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required> <br />
-
-    <input type="submit" value="Register">
-</form>
+<!DOCTYPE html>
+<html>
+    <h1>Twork</h1>
+    <h2>Register Form</h2>
+    <form action = "/register" , method = 'POST'>
+    <input type='email' name='email' placeholder="Enter email" required>
+    <input type='username' name='username' placeholder="Username" required>
+    <input type='password' name='password' required>
+    <input type='firstname' name='firstname' placeholder="firstname" required>
+    <input type='lastname' name='lastname' placeholder='lastname'  required>
+    <input type='submit'>
+    </form>
+</html>
