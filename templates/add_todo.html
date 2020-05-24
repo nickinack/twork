@@ -8,4 +8,11 @@
     <input type='text' name='deadline' required>
     <input type='submit'>
     </form>
+
+    {% if current_user.is_authenticated %}
+        {% for task in tasks %}
+            <ul>{{task.text}}</ul>
+        {% endfor %}
+    {% endif %}
+    
 </html>
