@@ -20,7 +20,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-from models import db, User
+from models import db, User, Todo
 db.init_app(app)
 
 with app.app_context():
