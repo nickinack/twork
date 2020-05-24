@@ -86,6 +86,8 @@ def register():
 @app.route('/login', methods=('GET', 'POST'))
 def login():
     flag = None
+    if current_user.is_authenticated:
+        return render_template('dashboard.html' , username = current_user.firstname)
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -110,14 +112,14 @@ def login():
 @app.route('/dashboard' , methods=('GET', 'POST'))
 @login_required
 def dashboard():   
-    return render_template('dashboard.html' , username=current_user.username)
+    return render_template('dashboard.html' , username=current_user.firstname)
 
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    redirect(url_for('login'))
+    return redirect(url_for('login'))
 
 
 '''
