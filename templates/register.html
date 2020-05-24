@@ -1,19 +1,75 @@
 <!DOCTYPE html>
 <html>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     {% for message in get_flashed_messages() %}
         <div style="color: red;">{{ message }}</div>
     {% endfor %}
     
-    <h1>Twork</h1>
-    <h2>Register Form</h2>
-    <form action = "/register" , method = 'POST'>
-    <input type='email' name='email' placeholder="Enter email" required>
-    <input type='username' name='username' placeholder="Username" required>
-    <input type='password' name='password' required>
-    <input type='firstname' name='firstname' placeholder="firstname" required>
-    <input type='lastname' name='lastname' placeholder='lastname'  required>
-    <input type='submit'>
+    
+    
+    <div class='wrapper'>
+    <form action = "/register" , method = 'POST' class='form-signin'>
+    <h2 class="form-signin-heading">Please register</h2>
+    <input type='email' name='email' placeholder="Enter email"  class="form-control" required>
+    <input type='username' name='username' placeholder="Username"  class="form-control" required>
+    <input type='password' name='password'  class="form-control" required>
+    <input type='firstname' name='firstname' placeholder="firstname"  class="form-control" required>
+    <input type='lastname' name='lastname' placeholder='lastname' class="form-control"  required>
+    <input class="btn btn-light btn-primary btn-block" type="submit">
     </form>
+    </div>
 </html>
+<style>
+    @import "bourbon";
+
+body {
+	background: #eee !important;	
+}
+
+.wrapper {	
+	margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);  
+
+  .form-signin-heading,
+	.checkbox {
+	  margin-bottom: 30px;
+	}
+
+
+	.form-control {
+	  position: relative;
+	  font-size: 16px;
+	  height: auto;
+	  padding: 10px;
+		@include box-sizing(border-box);
+
+		&:focus {
+		  z-index: 2;
+		}
+	}
+
+	input[type="text"] {
+	  margin-bottom: -1px;
+	  border-bottom-left-radius: 0;
+	  border-bottom-right-radius: 0;
+	}
+
+	input[type="password"] {
+	  margin-bottom: 20px;
+	  border-top-left-radius: 0;
+	  border-top-right-radius: 0;
+	}
+}
+
+</style>

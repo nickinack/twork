@@ -1,8 +1,48 @@
 <!DOCTYPE html>
 <html>
-    <h4>Welcome! {{ current_user.firstname }}</h4>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    {% for t in tasks %}
-        <p>Task: {{ t.text }} </p>
+    {% for message in get_flashed_messages() %}
+        <div style="color: red;">{{ message }}</div>
     {% endfor %}
+    <body>
+    <h1 class="text-center">Welcome! {{username}}</h1>
+    <div class='button'><a href="{{url_for('add')}}" class="btn btn-primary ">View your tasks and make changes here! </a>
+        <a href="{{url_for('logout')}}" class="btn btn-danger ">Logout </a></div>
+    </body>
+
 </html>
+<style>
+     body{ 
+        
+        overflow: hidden;
+        background-image: url("https://cdn.dribbble.com/users/1162077/screenshots/4948920/mechanical-pattern.gif");
+        background-size: cover;
+        height : 100vh;
+        padding :0;
+        margin : 0;
+    }
+    h1{
+        
+        font-family:'Courier New', Courier, monospace;
+        color: white;
+    }
+    .button{
+        
+        line-height: 200px;
+        margin-top: -100px;
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        width: 100%;
+        
+    }
+    
+</style>

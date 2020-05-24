@@ -1,18 +1,89 @@
 <!DOCTYPE html>
 <html>
-    <h1>Twork</h1>
-    <h2>To do List</h2>
-    <form action = "/add" , method = 'POST'>
-    <input type='text' name='text' placeholder="Enter text" required>
-    <input type='text' name='description' placeholder="Description">
-    <input type='text' name='deadline' required>
-    <input type='submit'>
-    </form>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+    <div id="flex-box">
+    <form action = "/add" , method = 'POST' class="form-signin">
+    <div class="form-signin-heading text-center">Add task</div>
+    <input type='text' name='text' placeholder="Enter text" class="form-control" required>
+    <input type='text' name='description' placeholder="Description" class="form-control">
+    <input type='text' name='deadline' required class="form-control" placeholder="Enter Deadline">
+    <input type='submit' class="form-control btn btn-primary">
+    <a href="{{ url_for('all_tasks')}}" class="form-control btn btn-dark">View all tasks</a>
+    <a href="{{ url_for('dashboard')}}" class="form-control btn btn-success">Visit Dashboard</a>
+    <a href="{{ url_for('logout')}}" class="form-control btn btn-danger">Logout</a>
+    </form>
+     
+  
+    <table class="table table-striped w-auto">
+        <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Task</th>
+              <th scope="col">Description</th>
+              <th scope="col">Deadline</th>
+              <th scope="col">Mark as Completed?</th>
+            </tr>
+          </thead>
     {% if current_user.is_authenticated %}
         {% for task in tasks %}
-            <ul>{{task.text}}</ul>
+            
+            <tr>
+            <td id='task_id'>{{task.id}}</td>
+            <td id='task_text'>{{task.text}}</td>
+            <td id='task_desc'>{{task.desc}}</td>
+            <td id='task_date'>{{task.deadline}}</td>
+            <td><a href="{{ url_for('complete' , id=task.id )}}" class="btn btn-dark">Mark as Complete</a></td>
+            </tr>
         {% endfor %}
     {% endif %}
+    </table>
+    </div>
+   
     
 </html>
+<style>
+    .form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);  
+    }
+
+    .form-signin-heading, {
+	  margin-bottom: 30px;
+	}
+
+
+	.form-control {
+	  position: relative;
+	  font-size: 16px;
+	  height: auto;
+	  padding: 10px;
+		@include box-sizing(border-box);
+
+		&:focus {
+		  z-index: 2;
+		}
+	}
+    #flex-box{
+        display:flex;
+        
+        margin-top: -100px;
+        position: absolute;
+        text-align: center;
+        top: 20%;
+        width: 100%;
+        justify-content: center;
+    }
+
+</style>
