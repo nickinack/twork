@@ -9,29 +9,27 @@ from flask_login import LoginManager , UserMixin , login_user , login_required ,
 app = Flask(__name__)
 app.secret_key = 'test'
 project_dir = os.path.dirname(os.path.abspath(__file__))
-database_file = "sqlite:///{}".format(os.path.join(project_dir, "todo.db"))
-user_database_file = "sqlite:///{}".format(os.path.join(project_dir, "user.db"))
+# database_file = "sqlite:///{}".format(os.path.join(project_dir, "todo.db"))
+
+database_file = "sqlite:///{}".format(os.path.join(project_dir, "db.sqlite"))
 app.config['SQLALCHEMY_DATABASE_URI'] = database_file
-app.config['SQLALCHEMY_BINDS'] = {'user' : user_database_file}
-db = SQLAlchemy(app)
+# app.config['SQLALCHEMY_BINDS'] = {'user' : user_database_file}
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-from models import *
+from models import db, User
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
 
 @app.route('/')
 def root():
     return redirect(url_for('index'))
 
-@login_manager.user_loader
-def user_loader(id):
-    return User.query.get(id)
-
-@app.before_request
-def session_permanent():
-    session.permanent = False
 
 @app.route('/index')
 def index():
@@ -49,13 +47,13 @@ def add():
 
     return render_template('add_todo.html')
 
+
 @app.route('/register' , methods = ['GET' , 'POST'])
 def register():
     flag = None
     if request.form:
         username = request.form['username']
         password = request.form['password']
-        hashed_password = generate_password_hash(password , method = 'sha256')
         email = request.form['email']
         if username is None:
             flag = 'Username is required.'
@@ -71,18 +69,20 @@ def register():
                 lastname=request.form['lastname'],
                 email=request.form['email'],
                 username=request.form['username'],
-                password=hashed_password
             )
+            user.set_password(password)
             db.session.add(user)
             db.session.commit()
             print('committed')
-            return redirect(url_for('register'))
+            return redirect(url_for('login'))
     
     if flag:
         flash(f'{flag}')
         print(flag)
 
     return render_template('register.html')
+
+
 @app.route('/login', methods=('GET', 'POST'))
 def login():
     flag = None
@@ -101,23 +101,46 @@ def login():
             flash(flag)
             print(flag)
         else:
-            session.clear()
-            session['user_id'] = user.id
-            login_user(user , remember = True)
-            return render_template('dashboard.html')
+            login_user(user)
+            return redirect(url_for('dashboard'))
     
     return render_template('login.html')
+
 
 @app.route('/dashboard' , methods=('GET', 'POST'))
 @login_required
 def dashboard():   
     return render_template('dashboard.html' , username=current_user.username)
 
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    redirect(url_for('login.html'))
+    redirect(url_for('login'))
+
+
+'''
+    ------------- HELPER FUNCTIONS FOR LOGIN MANAGER -------------
+'''
+@login_manager.user_loader
+def user_loader(id):
+    if id is not None:
+        return User.query.get(id)
+    return None
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash('You are not authorized to perform that action.')
+    return redirect(url_for('login'))
+
+'''
+    ------------ END HELPERS -------------------
+'''
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True) 

@@ -1,7 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
-from app import db
-#Instead of including foriegn key, we use login manager to find current user and then have current username dumped into database
-#Will do it tomorrow
+from werkzeug.security import generate_password_hash
+from flask_login import UserMixin
+
+db = SQLAlchemy()
+
 class Todo(db.Model):
     id = db.Column(db.Integer , primary_key=True)
     text = db.Column(db.String(200) , nullable = 'False')
@@ -9,8 +11,9 @@ class Todo(db.Model):
     deadline = db.Column(db.String(24) , nullable = 'False')
     complete = db.Column(db.Boolean)
 
-class User(db.Model):
-    __bind_key__ = 'user'
+
+class User(db.Model, UserMixin):
+    # __bind_key__ = 'user'
     id = db.Column(db.Integer , primary_key=True)
     email = db.Column(db.String() , nullable = False , unique=True)
     username = db.Column(db.String(120) , nullable = False , unique=True)
@@ -18,5 +21,8 @@ class User(db.Model):
     firstname = db.Column(db.String(120) , nullable = False)
     lastname = db.Column(db.String(120) , nullable = False)
 
-    def is_active(self):
-       return True
+    def set_password(self, password):
+        self.password = generate_password_hash(password, method='sha256')
+    
+    def check_password(self, password):
+        return check_password(self.password, password)

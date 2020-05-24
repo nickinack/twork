@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html>
+    {% for message in get_flashed_messages() %}
+        <div style="color: red;">{{ message }}</div>
+    {% endfor %}
+
     <h1>Twork</h1>
     <h2>Login Form</h2>
     <form action = "/login" , method = 'POST'>
