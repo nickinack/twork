@@ -7,3 +7,8 @@
 2. Karthik Viswanathan
  
 # Features
+- Flask
+- SQLite
+- Flask-login
+- Werkzeug
+- MarkupSafe
