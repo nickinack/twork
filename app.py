@@ -59,8 +59,8 @@ def add():
 def register():
     flag = None
     if current_user.is_authenticated:
-        flash('Logout in order to register')
-        return render_template('dashboard.html', username=current_user.firstname)
+        logout()
+    
     if request.form:
         username = request.form['username']
         password = request.form['password']
