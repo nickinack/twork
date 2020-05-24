@@ -28,3 +28,7 @@
 ![alt text](https://github.com/nickinack/twork/blob/master/image-5.PNG)
 - List of all tasks
 ![alt text](https://github.com/nickinack/twork/blob/master/image-6.PNG)
+
+# Issues
+
+Please feel free to contact any one of the creators in case of any issues / suggestions
