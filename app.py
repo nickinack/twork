@@ -37,6 +37,7 @@ def index():
 
 
 @app.route('/add' , methods = ['GET','POST'])
+@login_required
 def add():
     if request.form:
         user_input = Todo(text=request.form['text'] , desc=request.form['description'] , deadline = request.form['deadline'] , complete = False)
@@ -51,6 +52,9 @@ def add():
 @app.route('/register' , methods = ['GET' , 'POST'])
 def register():
     flag = None
+    if current_user.is_authenticated:
+        flash('Logout in order to register')
+        return render_template('dashboard.html' , username = current_user.firstname)
     if request.form:
         username = request.form['username']
         password = request.form['password']
