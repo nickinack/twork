@@ -1,4 +1,8 @@
 <!DOCTYPE html>
 <html>
-    <h4>Welcome! {{username}}</h4>
+    <h4>Welcome! {{ current_user.firstname }}</h4>
+
+    {% for t in tasks %}
+        <p>Task: {{ t.text }} </p>
+    {% endfor %}
 </html>

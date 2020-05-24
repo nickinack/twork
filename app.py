@@ -20,7 +20,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-from models import db, User
+from models import db, User, Todo
 db.init_app(app)
 
 with app.app_context():
@@ -37,13 +37,20 @@ def index():
 
 
 @app.route('/add' , methods = ['GET','POST'])
+@login_required
 def add():
-    if request.form:
-        user_input = Todo(text=request.form['text'] , desc=request.form['description'] , deadline = request.form['deadline'] , complete = False)
+    if request.method == 'POST':
+        user_input = Todo(
+            text=request.form['text'],
+            desc=request.form['description'],
+            deadline=request.form['deadline'],
+            complete=False,
+            user_id=current_user.id
+        )
         db.session.add(user_input)
         if db.session.commit():
             flash("Successful")
-        return redirect(url_for('add'))
+        return redirect(url_for('dashboard'))
 
     return render_template('add_todo.html')
 
@@ -111,8 +118,11 @@ def login():
 
 @app.route('/dashboard' , methods=('GET', 'POST'))
 @login_required
-def dashboard():   
-    return render_template('dashboard.html' , username=current_user.firstname)
+def dashboard():
+    user_id = current_user.id
+    tasks = Todo.query.filter_by(user_id=user_id).all()
+    print(tasks)
+    return render_template('dashboard.html', username=current_user.firstname, tasks=tasks)
 
 
 @app.route('/logout')
