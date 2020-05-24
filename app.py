@@ -39,20 +39,14 @@ def index():
 @app.route('/add' , methods = ['GET','POST'])
 @login_required
 def add():
-    if request.method == 'POST':
-        user_input = Todo(
-            text=request.form['text'],
-            desc=request.form['description'],
-            deadline=request.form['deadline'],
-            complete=False,
-            user_id=current_user.id
-        )
+    if request.form:
+        user_input = Todo(text=request.form['text'] , desc=request.form['description'] , deadline = request.form['deadline'] , complete = False, user_id = current_user.id)
         db.session.add(user_input)
         if db.session.commit():
             flash("Successful")
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('add' , tasks = Todo.query.filter_by(user_id=current_user.id)))
 
-    return render_template('add_todo.html')
+    return render_template('add_todo.html' , tasks = Todo.query.filter_by(user_id=current_user.id))
 
 
 @app.route('/register' , methods = ['GET' , 'POST'])
@@ -121,11 +115,8 @@ def login():
 
 @app.route('/dashboard' , methods=('GET', 'POST'))
 @login_required
-def dashboard():
-    user_id = current_user.id
-    tasks = Todo.query.filter_by(user_id=user_id).all()
-    print(tasks)
-    return render_template('dashboard.html', username=current_user.firstname, tasks=tasks)
+def dashboard():   
+    return render_template('dashboard.html' , username=current_user.firstname)
 
 
 @app.route('/logout')
