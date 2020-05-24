@@ -40,13 +40,19 @@ def index():
 @login_required
 def add():
     if request.form:
-        user_input = Todo(text=request.form['text'] , desc=request.form['description'] , deadline = request.form['deadline'] , complete = False, user_id = current_user.id)
+        user_input = Todo(
+            text=request.form['text'],
+            desc=request.form['description'],
+            deadline=request.form['deadline'],
+            complete=False,
+            user_id=current_user.id
+        )
         db.session.add(user_input)
         if db.session.commit():
             flash("Successful")
-        return redirect(url_for('add' , tasks = Todo.query.filter_by(user_id=current_user.id)))
+        return redirect(url_for('add', tasks=Todo.query.filter_by(user_id=current_user.id)))
 
-    return render_template('add_todo.html' , tasks = Todo.query.filter_by(user_id=current_user.id))
+    return render_template('add_todo.html', tasks=Todo.query.filter_by(user_id=current_user.id))
 
 
 @app.route('/register' , methods = ['GET' , 'POST'])
@@ -54,7 +60,7 @@ def register():
     flag = None
     if current_user.is_authenticated:
         flash('Logout in order to register')
-        return render_template('dashboard.html' , username = current_user.firstname)
+        return render_template('dashboard.html', username=current_user.firstname)
     if request.form:
         username = request.form['username']
         password = request.form['password']
@@ -99,7 +105,7 @@ def login():
         
         if user is None:
             flag = 'No such user'
-        elif not check_password_hash(user.password , password):
+        elif not check_password_hash(user.password, password):
             flag = 'Incorrect password'
         
         
@@ -116,7 +122,7 @@ def login():
 @app.route('/dashboard' , methods=('GET', 'POST'))
 @login_required
 def dashboard():   
-    return render_template('dashboard.html' , username=current_user.firstname)
+    return render_template('dashboard.html', username=current_user.firstname)
 
 
 @app.route('/logout')
