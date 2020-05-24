@@ -25,6 +25,15 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+    
+global i
+i = 0
+@app.before_request
+def clear_session():
+    global i 
+    if i == 0:
+        logout_user()
+    i = i+1
 
 @app.route('/')
 def root():
