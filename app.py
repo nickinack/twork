@@ -129,6 +129,7 @@ def dashboard():
     return render_template('dashboard.html' , username=current_user.firstname)
 
 @app.route('/complete/<id>')
+@login_required
 def complete(id):
     todo = Todo.query.filter_by(user_id = current_user.id , id=id).first()
     todo.complete = True
@@ -136,6 +137,7 @@ def complete(id):
     return redirect(url_for('add'))
 
 @app.route('/all_tasks')
+@login_required
 def all_tasks():
     todo = Todo.query.filter_by(user_id = current_user.id)
     return render_template('all_tasks.html' , todo=todo)
